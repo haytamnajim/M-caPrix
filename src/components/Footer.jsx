@@ -1,18 +1,18 @@
 export default function Footer() {
   return (
-    <footer className="bg-slate-950 w-full py-12 px-8 border-t border-white/5 mt-20 pb-32 md:pb-12 shadow-none relative z-10">
-      <div className="flex flex-col md:flex-row justify-between items-center max-w-7xl mx-auto gap-4">
-        <div className="flex flex-col items-center md:items-start gap-2">
-          <div className="flex items-center gap-2">
-            <span className="material-symbols-outlined text-blue-500" data-icon="build">build</span>
-            <span className="text-blue-500 font-bold font-inter">MécaPrix</span>
+    <footer className="bg-background w-full py-20 px-8 border-t border-white/5 mt-20 pb-32 md:pb-12 relative z-10">
+      <div className="flex flex-col md:flex-row justify-between items-center max-w-7xl mx-auto gap-8">
+        <div className="flex flex-col items-center md:items-start gap-3">
+          <div className="flex items-center gap-3">
+            <span className="material-symbols-outlined text-primary" data-icon="handyman">handyman</span>
+            <span className="text-white font-black tracking-widest uppercase">MÉCAPRIX</span>
           </div>
-          <p className="font-inter text-sm text-slate-500">© 2026 MécaPrix. Performance & Précision.</p>
+          <p className="text-muted text-xs font-semibold tracking-widest uppercase opacity-60">© 2026 MÉCAPRIX • Casablanca, Maroc</p>
         </div>
-        <div className="flex gap-8">
-          <a className="font-inter text-sm text-slate-500 hover:text-white transition-colors cursor-pointer" href="#">Mentions Légales</a>
-          <a className="font-inter text-sm text-slate-500 hover:text-white transition-colors cursor-pointer" href="#">Contact</a>
-          <a className="font-inter text-sm text-slate-500 hover:text-white transition-colors cursor-pointer" href="#">CGV</a>
+        <div className="flex gap-10">
+          <a className="text-[10px] font-bold tracking-[0.2em] uppercase text-muted hover:text-white transition-colors" href="#">Mentions</a>
+          <a className="text-[10px] font-bold tracking-[0.2em] uppercase text-muted hover:text-white transition-colors" href="#">Contact</a>
+          <a className="text-[10px] font-bold tracking-[0.2em] uppercase text-muted hover:text-white transition-colors" href="#">Support</a>
         </div>
       </div>
     </footer>

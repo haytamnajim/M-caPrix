@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import Navbar from './components/Navbar';
 import BottomNav from './components/BottomNav';
 import BrandSelector from './components/BrandSelector';
@@ -25,127 +26,165 @@ function App() {
   const currentParts = (activeBrand && activeModel && database[activeBrand]?.[activeModel]) || [];
 
   return (
-    <div className="flex flex-col min-h-screen relative w-full">
+    <div className="flex flex-col min-h-screen relative w-full bg-background selection:bg-primary/30">
       <Navbar />
 
-      <main className="flex-grow pt-[4rem] relative overflow-hidden bg-cinematic">
-        {!showCatalog ? (
-          <>
-            {/* Landing Page Content */}
-            <div className="relative z-10 w-full mb-12 py-20 px-margin text-center min-h-[60vh] flex flex-col items-center justify-center">
-              <div className="inline-block px-4 py-1.5 rounded-full border border-primary/30 bg-primary/10 text-primary text-xs font-bold tracking-wider uppercase mb-8 backdrop-blur-md animate-fade-in-up">
-                Première plateforme de pièces auto
-              </div>
-              <h1 className="font-h1 text-5xl md:text-6xl lg:text-7xl text-white drop-shadow-lg mb-6 max-w-4xl mx-auto leading-tight animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
-                Le bon prix, <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">la bonne pièce</span>
-              </h1>
-              <p className="font-body-lg text-lg text-on-surface-variant max-w-2xl mx-auto mb-12 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
-                Expertise technique et performance pour votre véhicule. Commandez vos pièces détachées parmi les plus grandes marques mondiales avec une qualité premium garantie.
-              </p>
+      <main className="flex-grow pt-[4rem] relative overflow-hidden">
+        <AnimatePresence mode="wait">
+          {!showCatalog ? (
+            <motion.section 
+              key="landing"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="relative min-h-screen flex flex-col items-center justify-center pt-20"
+            >
+              {/* Background with cinematic overlay */}
+              <div className="absolute inset-0 bg-cinematic z-0 scale-105" />
+              
+              {/* Subtle mesh gradient glow */}
+              <div className="mesh-gradient opacity-60" />
 
-              <div className="animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
-                <button 
-                  onClick={() => setShowCatalog(true)}
-                  className="group relative px-8 py-4 bg-primary text-white rounded-full font-button text-lg transition-all shadow-[0_0_20px_rgba(34,211,238,0.3)] hover:shadow-[0_0_40px_rgba(34,211,238,0.6)] hover:-translate-y-1 flex items-center gap-3 overflow-hidden"
+              <div className="relative z-10 w-full max-w-7xl mx-auto px-6 text-center">
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
                 >
-                  <div className="absolute inset-0 bg-accent translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out z-0"></div>
-                  <span className="relative z-10 font-bold">Voir le catalogue</span>
-                  <span className="material-symbols-outlined relative z-10 transition-transform duration-300 group-hover:translate-x-2" data-icon="arrow_forward">arrow_forward</span>
-                </button>
-              </div>
-            </div>
-
-            {/* Technical Excellence Section from Home */}
-            <div className="relative w-full z-10 py-20 mt-12 mb-12 before:absolute before:inset-0 before:-z-10 before:bg-[radial-gradient(ellipse_at_top_left,rgba(34,211,238,0.05),transparent_50%)] border-t border-white/5">
-              <div className="max-w-7xl mx-auto px-margin grid md:grid-cols-12 gap-12 items-center">
-                <div className="md:col-span-6 md:col-start-1 space-y-8 animate-fade-in-up">
-                  <div className="space-y-4">
-                    <span className="text-muted text-[11px] font-bold tracking-[0.2em] uppercase">Standards de Précision</span>
-                    <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight">
-                      L'assurance qualité MécaPrix <br className="hidden lg:block"/>pour chaque kilomètre.
-                    </h2>
-                    <p className="text-muted text-base md:text-lg max-w-lg leading-relaxed">
-                      Nos pièces sont sélectionnées selon des critères rigoureux de durabilité et de compatibilité. Chaque commande bénéficie de notre expertise technique intégrée.
-                    </p>
+                  <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/20 bg-primary/5 backdrop-blur-xl mb-8">
+                    <span className="w-2 h-2 bg-primary rounded-full animate-pulse shadow-[0_0_8px_rgba(59,130,246,0.8)]"></span>
+                    <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-primary">Première plateforme de pièces auto</span>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">
-                    {[
-                      { icon: 'verified', title: 'Certifié OEM', desc: "Qualité d'origine garantie" },
-                      { icon: 'support_agent', title: 'Expert en ligne', desc: 'Accompagnement 7j/7' },
-                      { icon: 'local_shipping', title: 'Livraison 24h', desc: 'Partout au Maroc' },
-                      { icon: 'security', title: 'Garantie 2 ans', desc: 'Achat sans compromis' }
-                    ].map((feature, i) => (
-                      <div key={i} className="bg-card/80 backdrop-blur-md rounded-2xl p-5 border border-white/5 transition-all duration-300 hover:border-primary/40 hover:shadow-[0_8px_25px_rgba(34,211,238,0.1)] group flex flex-col gap-3">
-                        <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center border border-primary/20 group-hover:bg-primary/20 group-hover:border-primary/40 transition-colors">
-                          <span className="material-symbols-outlined text-primary group-hover:drop-shadow-[0_0_8px_rgba(34,211,238,0.8)] transition-all" data-icon={feature.icon}>{feature.icon}</span>
-                        </div>
-                        <div>
-                          <h4 className="text-white font-bold text-sm mb-1">{feature.title}</h4>
-                          <p className="text-muted text-xs">{feature.desc}</p>
-                        </div>
-                      </div>
+                  <h1 className="font-inter text-5xl md:text-7xl lg:text-8xl font-black text-white leading-[1.05] tracking-tight mb-8">
+                    Le bon prix, <br/>
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-accent to-primary bg-[length:200%_auto] animate-glow">
+                      la bonne pièce
+                    </span>
+                  </h1>
+
+                  <p className="max-w-2xl mx-auto text-lg md:text-xl text-muted leading-relaxed mb-12">
+                    Expertise technique et performance pour votre véhicule. 
+                    Commandez vos pièces détachées parmi les plus grandes marques mondiales.
+                  </p>
+
+                  <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
+                    <motion.button 
+                      whileHover={{ scale: 1.05, y: -2 }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={() => setShowCatalog(true)}
+                      className="group relative px-10 py-5 bg-primary text-white rounded-2xl font-bold text-lg transition-all shadow-blue-glow flex items-center gap-3 btn-glow"
+                    >
+                      <span>Voir le catalogue</span>
+                      <span className="material-symbols-outlined transition-transform group-hover:translate-x-1" data-icon="arrow_forward">arrow_forward</span>
+                    </motion.button>
+                    
+                    <motion.button 
+                      whileHover={{ scale: 1.05, y: -2 }}
+                      whileTap={{ scale: 0.98 }}
+                      className="px-10 py-5 bg-white/5 hover:bg-white/10 text-white rounded-2xl font-bold text-lg backdrop-blur-xl border border-white/5 transition-all"
+                    >
+                      Explorer les catégories
+                    </motion.button>
+                  </div>
+                </motion.div>
+
+                {/* Trust Indicators */}
+                <motion.div 
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.5, duration: 1 }}
+                  className="mt-32 pt-12 border-t border-white/5"
+                >
+                  <p className="text-[10px] font-bold tracking-[0.3em] uppercase text-muted mb-10">Qualité Certifiée par l'Industrie</p>
+                  <div className="flex flex-wrap justify-center items-center gap-10 md:gap-20 opacity-40 grayscale contrast-125">
+                    {['BOSCH', 'BREMBO', 'VALEO', 'MICHELIN', 'CASTROL'].map((brand) => (
+                      <span key={brand} className="text-xl font-black tracking-tighter text-white">{brand}</span>
                     ))}
                   </div>
-                </div>
+                </motion.div>
 
-                <div className="md:col-span-6 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
-                  <div className="rounded-3xl overflow-hidden bg-card p-2 shadow-[0_0_40px_rgba(34,211,238,0.08)] ring-1 ring-white/10 relative group transform transition-all duration-500 hover:-translate-y-2">
-                    <div className="absolute inset-0 bg-gradient-to-tr from-primary/10 to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-10 pointer-events-none"></div>
-                    <div className="bg-background rounded-2xl h-[350px] sm:h-[450px] lg:h-[550px] w-full flex items-center justify-center overflow-hidden relative">
-                      <img alt="Engineering" className="w-full h-full object-cover opacity-80 mix-blend-lighten transition-transform duration-1000 group-hover:scale-110" src="/engine.png"/>
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#0B0F1A] via-transparent to-transparent opacity-80"></div>
-                    </div>
+                {/* Guarantees */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-20 max-w-5xl mx-auto">
+                    {[
+                      { icon: 'verified', label: 'Certifié OEM' },
+                      { icon: 'local_shipping', label: 'Livraison 24h' },
+                      { icon: 'support_agent', label: 'Support Expert' },
+                      { icon: 'security', label: 'Garantie 2 ans' }
+                    ].map((item, i) => (
+                      <motion.div 
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.8 + (i * 0.1) }}
+                        key={i} 
+                        className="flex items-center gap-3 px-4 py-3 rounded-2xl bg-white/5 border border-white/5 backdrop-blur-sm"
+                      >
+                        <span className="material-symbols-outlined text-primary text-xl">{item.icon}</span>
+                        <span className="text-[10px] font-bold tracking-widest uppercase text-textMain">{item.label}</span>
+                      </motion.div>
+                    ))}
+                </div>
+              </div>
+            </motion.section>
+          ) : (
+            <motion.section 
+              key="catalog"
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              className="max-w-7xl mx-auto px-6 py-20"
+            >
+              {/* Catalog Header */}
+              <div className="text-center mb-16">
+                <h2 className="text-4xl md:text-5xl font-black text-white mb-6">Catalogue de pièces</h2>
+                <div className="flex justify-center w-full max-w-2xl mx-auto">
+                  <div className="relative w-full group">
+                    <input 
+                      type="text" 
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="w-full bg-white/5 backdrop-blur-2xl border border-white/10 rounded-2xl py-5 px-16 text-white placeholder-muted focus:outline-none focus:ring-2 focus:ring-primary/50 focus:bg-white/10 transition-all shadow-xl" 
+                      placeholder="Chercher une référence, une pièce..." 
+                    />
+                    <span className="material-symbols-outlined absolute left-6 top-1/2 -translate-y-1/2 text-muted group-focus-within:text-primary transition-colors" data-icon="search">search</span>
+                    <button className="absolute right-3 top-1/2 -translate-y-1/2 bg-primary hover:bg-brandBlue text-white px-8 py-2.5 rounded-xl font-bold text-sm transition-all shadow-lg">
+                      Rechercher
+                    </button>
                   </div>
                 </div>
               </div>
-            </div>
-          </>
-        ) : (
-          <>
-            {/* Catalog View Content */}
-            <div className="relative z-10 w-full mb-12 pt-8 pb-4 px-margin text-center animate-fade-in-up">
-              <h2 className="font-h1 text-3xl md:text-4xl text-white mb-8">
-                Catalogue de pièces
-              </h2>
-              <div className="flex justify-center w-full max-w-2xl mx-auto">
-                <div className="relative w-full">
-                  <input 
-                    type="text" 
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full bg-white/5 backdrop-blur-xl border border-white/10 rounded-full py-4 px-14 text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-primary focus:bg-white/10 focus:border-primary/50 transition-all outline-none" 
-                    placeholder="Chercher une référence, une pièce..." 
-                  />
-                  <span className="material-symbols-outlined absolute left-5 top-1/2 -translate-y-1/2 text-white/50" data-icon="search">search</span>
-                  <button className="absolute right-3 top-1/2 -translate-y-1/2 bg-primary hover:bg-accent text-white px-6 py-2 rounded-full font-button text-sm transition-all shadow-lg hover:shadow-[0_0_15px_rgba(34,211,238,0.4)]">
-                    Rechercher
-                  </button>
-                </div>
+
+              {/* Selection Interface */}
+              <div className="space-y-12">
+                <BrandSelector 
+                  brands={brands} 
+                  activeBrand={activeBrand} 
+                  setActiveBrand={setActiveBrand} 
+                />
+
+                <ModelSelector 
+                  models={currentModels} 
+                  activeModel={activeModel} 
+                  setActiveModel={setActiveModel} 
+                />
+
+                <PartsTable 
+                  parts={currentParts} 
+                  searchQuery={searchQuery} 
+                />
               </div>
-            </div>
 
-            {/* Filters and Table */}
-            <div className="max-w-7xl mx-auto px-margin relative z-10 w-full mb-24 animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
-              <BrandSelector 
-                brands={brands} 
-                activeBrand={activeBrand} 
-                setActiveBrand={setActiveBrand} 
-              />
-
-              <ModelSelector 
-                models={currentModels} 
-                activeModel={activeModel} 
-                setActiveModel={setActiveModel} 
-              />
-
-              <PartsTable 
-                parts={currentParts} 
-                searchQuery={searchQuery} 
-              />
-            </div>
-          </>
-        )}
+              {/* Back Button */}
+              <button 
+                onClick={() => setShowCatalog(false)}
+                className="mt-12 text-muted hover:text-primary flex items-center gap-2 font-bold tracking-widest uppercase text-xs transition-colors"
+              >
+                <span className="material-symbols-outlined text-sm">arrow_back</span>
+                Retour à l'accueil
+              </button>
+            </motion.section>
+          )}
+        </AnimatePresence>
       </main>
 
       <Footer />

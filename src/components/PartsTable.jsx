@@ -1,4 +1,8 @@
+import { useState } from 'react';
+
 export default function PartsTable({ parts, searchQuery }) {
+  const [selectedPartForOrder, setSelectedPartForOrder] = useState(null);
+
   const filteredParts = parts.filter(part => 
     part.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     part.category.toLowerCase().includes(searchQuery.toLowerCase())
@@ -83,9 +87,12 @@ export default function PartsTable({ parts, searchQuery }) {
                   </p>
                 </div>
                 
-                <button className="bg-primary hover:bg-accent text-white px-5 py-2.5 rounded-xl font-bold text-sm transition-all duration-300 transform active:scale-95 shadow-[0_4px_14px_rgba(59,130,246,0.25)] hover:shadow-[0_6px_20px_rgba(34,211,238,0.4)] flex items-center gap-2">
-                  <span className="material-symbols-outlined text-[18px]">add_shopping_cart</span>
-                  <span className="hidden sm:inline">Ajouter</span>
+                <button 
+                  onClick={() => setSelectedPartForOrder(part)}
+                  className="bg-primary hover:bg-accent text-white px-5 py-2.5 rounded-xl font-bold text-sm transition-all duration-300 transform active:scale-95 shadow-[0_4px_14px_rgba(59,130,246,0.25)] hover:shadow-[0_6px_20px_rgba(34,211,238,0.4)] flex items-center gap-2"
+                >
+                  <span className="material-symbols-outlined text-[18px]">shopping_bag</span>
+                  <span className="hidden sm:inline">Commander</span>
                 </button>
               </div>
             </div>
@@ -96,7 +103,7 @@ export default function PartsTable({ parts, searchQuery }) {
       <div className="mt-6 flex flex-col md:flex-row items-center justify-between gap-4 animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
         <p className="text-xs text-muted font-medium bg-black/20 py-2 px-4 rounded-full border border-white/5">Affichage de {filteredParts.length} résultats</p>
         <div className="flex gap-2">
-          <button className="w-10 h-10 flex items-center justify-center glass-card rounded-xl text-muted hover:text-primary disabled:opacity-30 disabled:hover:text-muted transition-colors" disabled>
+           <button className="w-10 h-10 flex items-center justify-center glass-card rounded-xl text-muted hover:text-primary disabled:opacity-30 disabled:hover:text-muted transition-colors" disabled>
             <span className="material-symbols-outlined" data-icon="chevron_left">chevron_left</span>
           </button>
           <button className="w-10 h-10 flex items-center justify-center rounded-xl bg-primary text-white font-bold shadow-[0_0_10px_rgba(59,130,246,0.4)]">1</button>
@@ -107,6 +114,75 @@ export default function PartsTable({ parts, searchQuery }) {
           </button>
         </div>
       </div>
+
+      {/* Checkout Form Modal */}
+      {selectedPartForOrder && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center px-4">
+          {/* Backdrop */}
+          <div 
+            className="absolute inset-0 bg-background/80 backdrop-blur-sm"
+            onClick={() => setSelectedPartForOrder(null)}
+          ></div>
+          
+          {/* Modal Content */}
+          <div className="bg-card border border-white/10 rounded-2xl p-6 w-full max-w-md relative z-10 shadow-[0_0_40px_rgba(0,0,0,0.5)] animate-fade-in-up">
+            <button 
+              className="absolute top-4 right-4 text-muted hover:text-white transition-colors"
+              onClick={() => setSelectedPartForOrder(null)}
+            >
+              <span className="material-symbols-outlined">close</span>
+            </button>
+            
+            <h3 className="text-2xl font-bold text-white mb-1">Passer la commande</h3>
+            <p className="text-sm text-muted mb-6 object-truncate pr-8">
+              {selectedPartForOrder.name} - <span className="text-accent font-bold">{selectedPartForOrder.price.toLocaleString('fr-FR')} MAD</span>
+            </p>
+
+            <form className="space-y-4" onSubmit={(e) => {
+              e.preventDefault();
+              alert("Commande confirmée !"); 
+              setSelectedPartForOrder(null);
+            }}>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-1">
+                  <label className="text-xs font-bold text-muted ml-1">Nom</label>
+                  <input required type="text" className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:border-primary/50 focus:ring-1 focus:ring-primary outline-none transition-all placeholder:text-white/30" placeholder="Votre nom" />
+                </div>
+                <div className="space-y-1">
+                  <label className="text-xs font-bold text-muted ml-1">Prénom</label>
+                  <input required type="text" className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:border-primary/50 focus:ring-1 focus:ring-primary outline-none transition-all placeholder:text-white/30" placeholder="Votre prénom" />
+                </div>
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-xs font-bold text-muted ml-1">Numéro de téléphone</label>
+                <input required type="tel" className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:border-primary/50 focus:ring-1 focus:ring-primary outline-none transition-all placeholder:text-white/30" placeholder="06 XX XX XX XX" />
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-xs font-bold text-muted ml-1">Adresse de livraison</label>
+                <textarea required rows="2" className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-white focus:border-primary/50 focus:ring-1 focus:ring-primary outline-none transition-all placeholder:text-white/30 resize-none" placeholder="Votre adresse complète..."></textarea>
+              </div>
+
+              <div className="flex gap-3 pt-4 border-t border-white/10 mt-6">
+                <button 
+                  type="button" 
+                  onClick={() => setSelectedPartForOrder(null)}
+                  className="flex-1 py-3 px-4 rounded-xl font-bold bg-white/5 hover:bg-white/10 text-white transition-colors"
+                >
+                  Annuler
+                </button>
+                <button 
+                  type="submit" 
+                  className="flex-1 py-3 px-4 rounded-xl font-bold bg-primary hover:bg-accent text-white shadow-[0_0_15px_rgba(59,130,246,0.5)] transition-all transform hover:-translate-y-0.5"
+                >
+                  Confirmer
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </section>
   );
 }

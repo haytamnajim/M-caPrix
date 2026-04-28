@@ -10,10 +10,6 @@ export default function BottomNav() {
         <span className="text-[8px] font-black tracking-widest uppercase mt-1">Recherche</span>
       </button>
       <button className="flex flex-col items-center justify-center text-muted hover:text-white transition-colors group">
-        <span className="material-symbols-outlined text-2xl group-active:scale-90 transition-transform" data-icon="favorite">favorite</span>
-        <span className="text-[8px] font-black tracking-widest uppercase mt-1">Favoris</span>
-      </button>
-      <button className="flex flex-col items-center justify-center text-muted hover:text-white transition-colors group">
         <span className="material-symbols-outlined text-2xl group-active:scale-90 transition-transform" data-icon="person">person</span>
         <span className="text-[8px] font-black tracking-widest uppercase mt-1">Compte</span>
       </button>

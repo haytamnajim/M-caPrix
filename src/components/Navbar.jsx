@@ -12,7 +12,6 @@ export default function Navbar() {
         <nav className="hidden md:flex items-center gap-10">
           <a className="text-primary font-semibold text-sm tracking-widest uppercase transition-all hover:text-white" href="#">Catalogue</a>
           <a className="text-muted font-semibold text-sm tracking-widest uppercase transition-all hover:text-white" href="#">Recherche</a>
-          <a className="text-muted font-semibold text-sm tracking-widest uppercase transition-all hover:text-white" href="#">Favoris</a>
         </nav>
 
         <div className="flex items-center gap-2">

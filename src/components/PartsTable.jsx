@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { createPortal } from 'react-dom';
 
 export default function PartsTable({ parts, searchQuery }) {
   const [selectedPartForOrder, setSelectedPartForOrder] = useState(null);
@@ -116,11 +117,11 @@ export default function PartsTable({ parts, searchQuery }) {
       </div>
 
       {/* Checkout Form Modal */}
-      {selectedPartForOrder && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center px-4">
+      {selectedPartForOrder && document.body && createPortal(
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center px-4" style={{ position: 'fixed' }}>
           {/* Backdrop */}
           <div 
-            className="absolute inset-0 bg-background/80 backdrop-blur-sm"
+            className="absolute inset-0 bg-background/80 backdrop-blur-md"
             onClick={() => setSelectedPartForOrder(null)}
           ></div>
           
@@ -181,7 +182,8 @@ export default function PartsTable({ parts, searchQuery }) {
               </div>
             </form>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </section>
   );
